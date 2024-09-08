@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaskManager.MainPage"
+             xmlns:viewmodel="clr-namespace:TaskManager.Resources.ViewModel"
+             >
+
+
+    <Grid RowDefinitions="100, Auto, *"
+          ColumnDefinitions=".33*, .33*, .33*"
+          ColumnSpacing="5">
+
+        <Image Source="task.png"
+               Grid.ColumnSpan="1"/>
+
+        <Label Text="TaskManager" 
+               Grid.Column="1" 
+               FontSize="20" 
+               VerticalTextAlignment="Center"/>
+
+        <Entry Grid.Row="1" 
+               Placeholder="Enter new task here..." 
+               Grid.ColumnSpan="2"
+               Text="{Binding Text}"
+               Margin="10"/>
+
+        <Button Grid.Row="1" Grid.Column="2" Margin="10" Text="+" Command="{Binding AddCommand}"/>
+
+
+        <CollectionView Grid.Row="2" Grid.ColumnSpan="2" Margin="10" ItemsSource="{Binding Items}" SelectionMode="None">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type x:String}">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Remove"
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
+                                           CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="0.5">      
+                        <Frame>
+                             <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, 
+                                        Path=TapCommand}" 
+                                        CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            <Label Text="{Binding .}"
+                                   FontSize="24"/>
+                        </Frame>
+                    </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+    </Grid>
+
+
+</ContentPage>
